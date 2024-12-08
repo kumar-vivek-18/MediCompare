@@ -24,8 +24,8 @@ app.use('/puppetter', puppeteerRouter);
 
 connectDB()
     .then(() => {
-        app.listen(process.env.PORT || 5000, () => {
-            console.log('Server is running at port'.yellow.bold, process.env.PORT || 5000);
+        app.listen(5001, () => {
+            console.log('Server is running at port'.yellow.bold, 5001);
         })
     })
     .catch((err) => {
