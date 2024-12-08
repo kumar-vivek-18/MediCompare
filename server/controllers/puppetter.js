@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer';
+import chromium from 'chromium';
 
 export const getNetmedsResult = async (req, res) => {
     try {
@@ -11,7 +12,11 @@ export const getNetmedsResult = async (req, res) => {
 
         console.log('URI:', uri);
 
-        const browser = await puppeteer.launch({ headless: true });
+        const browser = await puppeteer.launch({
+            headless: true,
+            executablePath: chromium.path,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        });
         const page = await browser.newPage();
 
         await page.goto(uri, { waitUntil: 'domcontentloaded' });
@@ -56,7 +61,11 @@ export const getNetmedsResult = async (req, res) => {
 export const getPharmeasyResult = async (req, res) => {
     try {
         const { uri } = req.query;
-        const browser = await puppeteer.launch({ headless: true });
+        const browser = await puppeteer.launch({
+            headless: true,
+            executablePath: chromium.path,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        });
         const page = await browser.newPage();
         console.log('uri', uri, page);
         // const url = 'https://pharmeasy.in/search/all?name=dolo';
@@ -96,7 +105,11 @@ export const getPharmeasyResult = async (req, res) => {
 export const get1mgRes = async (req, res) => {
     try {
         const { uri } = req.query;
-        const browser = await puppeteer.launch({ headless: true });
+        const browser = await puppeteer.launch({
+            headless: true,
+            executablePath: chromium.path,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        });
         const page = await browser.newPage();
 
         // const url = 'https://pharmeasy.in/search/all?name=dolo';
