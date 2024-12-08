@@ -1,17 +1,33 @@
 import express from 'express';
-import { get1mgRes, getNetmedsResult, getPharmeasyResult } from './puppetter.js';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { connectDB } from './db/db.js';
+import bodyParser from 'body-parser';
+import utilsRouter from './routes/utils.routes.js';
+import medicineRouter from './routes/medicine.routes.js';
+import puppeteerRouter from './routes/puppeter.routes.js';
 
 const app = express();
+
+app.use(cors());
+app.use(bodyParser.json());
+dotenv.config({ path: './.env' });
 
 
 
 app.get('/', (req, res) => {
     res.send("Server is running");
 });
-app.get('/get-netmeds', getNetmedsResult);
-app.get('/get-pharmeasy', getPharmeasyResult);
-app.get('/get-get1mg', get1mgRes);
+app.use('/utils', utilsRouter);
+app.use('/medicine', medicineRouter);
+app.use('/puppetter', puppeteerRouter);
 
-app.listen(5000, () => {
-    console.log('Server is running at port 5000');
-});
+connectDB()
+    .then(() => {
+        app.listen(process.env.PORT || 5000, () => {
+            console.log('Server is running at port'.yellow.bold, process.env.PORT || 5000);
+        })
+    })
+    .catch((err) => {
+        console.log("MONGO db connection failed !!! ", err);
+    });

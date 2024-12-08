@@ -11,14 +11,11 @@ export const getNetmedsResult = async (req, res) => {
 
         console.log('URI:', uri);
 
-        // Launch Puppeteer
-        const browser = await puppeteer.launch({ headless: true }); // Headless mode
+        const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
 
-        // Navigate to the given URI
         await page.goto(uri, { waitUntil: 'domcontentloaded' });
 
-        // Wait for the main medicine list container to load
         const medicineSelector = '.ais-InfiniteHits-item';
         await page.waitForSelector(medicineSelector, { timeout: 30000 });
 
@@ -33,28 +30,23 @@ export const getNetmedsResult = async (req, res) => {
                 const description = item.querySelector('.drug-varients')?.textContent?.trim() || 'No description';
                 const price = item.querySelector('.final-price')?.textContent?.trim() || 'No price';
                 const image = item.querySelector('.product-image-photo')?.src || 'No image';
-                // const discount = item.querySelector('.save-badge')?.textContent?.trim() || 'No discount';
-                // const mrp = item.querySelector('.price strike')?.textContent?.trim() || 'No MRP';
 
                 data.push({ name, description, price, image });
-                console.log('data', data);
+                // console.log('data', data);
             });
 
             return data;
         });
 
-        console.log('Scraped data:', medicines);
+        console.log('Scraped data: netmeds', medicines.slice(0, Math.min(medicines.length, 1)));
 
-        // Close the browser
         await browser.close();
 
-        // Return the scraped data
-        return res.status(200).json(medicines);
+        return res.status(200).json(medicines.slice(0, Math.min(medicineSelector.length, 1)));
 
     } catch (error) {
         console.error('Error scraping data:', error.message);
 
-        // Handle errors
         return res.status(500).json({ error: error.message });
     }
 };
@@ -64,14 +56,13 @@ export const getNetmedsResult = async (req, res) => {
 export const getPharmeasyResult = async (req, res) => {
     try {
         const { uri } = req.query;
-        const browser = await puppeteer.launch({ headless: true }); // Headless mode enabled
+        const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
         console.log('uri', uri, page);
         // const url = 'https://pharmeasy.in/search/all?name=dolo';
 
         await page.goto(uri, { waitUntil: 'domcontentloaded' });
 
-        // Wait for medicine list to load
         await page.waitForSelector('.Search_medicineLists__hM5Hk');
 
         const medicines = await page.evaluate(() => {
@@ -90,11 +81,11 @@ export const getPharmeasyResult = async (req, res) => {
             return data;
         });
 
-        console.log(medicines); // Output the scraped data
+        console.log('Scraped data: pharmeasy', medicines.slice(0, Math.min(medicines.length, 1)));
 
         await browser.close();
 
-        return res.status(200).json(medicines);
+        return res.status(200).json(medicines.slice(0, Math.min(medicines.length, 1)));
     } catch (error) {
         return res.status(500).json({ message: "Server Error", error: error.message });
     }
@@ -105,14 +96,13 @@ export const getPharmeasyResult = async (req, res) => {
 export const get1mgRes = async (req, res) => {
     try {
         const { uri } = req.query;
-        const browser = await puppeteer.launch({ headless: true }); // Headless mode enabled
+        const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
 
         // const url = 'https://pharmeasy.in/search/all?name=dolo';
         console.log('uri, page', uri, page);
         await page.goto(uri, { waitUntil: 'domcontentloaded' });
 
-        // Wait for medicine list to load
         await page.waitForSelector('.style__container___jkjS2');
 
         const medicines = await page.evaluate(() => {
@@ -131,11 +121,11 @@ export const get1mgRes = async (req, res) => {
             return data;
         });
 
-        console.log(medicines); // Output the scraped data
+        console.log('Scraped data: mg', medicines.slice(0, Math.min(medicines.length, 1)));
 
         await browser.close();
 
-        return res.status(200).json(medicines);
+        return res.status(200).json(medicines.slice(0, Math.min(medicines.length, 1)));
     } catch (error) {
         return res.status(500).json({ message: "Internal server error", error: error.message });
     }
