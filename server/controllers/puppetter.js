@@ -20,7 +20,7 @@ export const getNetmedsResult = async (req, res) => {
         const page = await browser.newPage();
 
         await page.goto(uri, { waitUntil: 'networkidle2' });
-
+        console.log('page', page);
 
         await page.waitForSelector('.ais-InfiniteHits-item', { timeout: 30000 });
 
