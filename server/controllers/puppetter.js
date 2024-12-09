@@ -21,8 +21,7 @@ export const getNetmedsResult = async (req, res) => {
 
         await page.goto(uri, { waitUntil: 'domcontentloaded' });
 
-        const medicineSelector = '.ais-InfiniteHits-item';
-        await page.waitForSelector(medicineSelector, { timeout: 30000 });
+        await page.waitForSelector('.ais-InfiniteHits-item', { timeout: 30000 });
 
         console.log('Scraping data...');
         const medicines = await page.evaluate(() => {
@@ -47,7 +46,7 @@ export const getNetmedsResult = async (req, res) => {
 
         await browser.close();
 
-        return res.status(200).json(medicines.slice(0, Math.min(medicineSelector.length, 1)));
+        return res.status(200).json(medicines.slice(0, Math.min(medicines.length, 1)));
 
     } catch (error) {
         console.error('Error scraping data:', error.message);
