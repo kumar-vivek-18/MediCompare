@@ -13,13 +13,14 @@ export const getNetmedsResult = async (req, res) => {
         console.log('URI:', uri);
 
         const browser = await puppeteer.launch({
-            headless: false,
+            headless: true,
             executablePath: chromium.path,
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
         });
         const page = await browser.newPage();
 
-        await page.goto(uri, { waitUntil: 'domcontentloaded' });
+        await page.goto(uri, { waitUntil: 'networkidle2' });
+
 
         await page.waitForSelector('.ais-InfiniteHits-item', { timeout: 30000 });
 
