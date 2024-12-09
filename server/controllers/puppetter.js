@@ -18,6 +18,7 @@ export const getNetmedsResult = async (req, res) => {
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
         });
         const page = await browser.newPage();
+        await page.setViewport({ width: 375, height: 667 });
 
         await page.goto(uri, { waitUntil: 'networkidle2' });
         console.log('page', page);
