@@ -18,7 +18,7 @@ export const getNetmedsResult = async (req, res) => {
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
-                '--window-size=900,800'
+                '--window-size=600,800'
             ],
         });
         const page = await browser.newPage();
