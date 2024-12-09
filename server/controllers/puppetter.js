@@ -13,15 +13,17 @@ export const getNetmedsResult = async (req, res) => {
         console.log('URI:', uri);
 
         const browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             executablePath: chromium.path,
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--window-size=900,800'
+            ],
         });
         const page = await browser.newPage();
-        await page.setViewport({ width: 375, height: 667 });
 
-        await page.goto(uri, { waitUntil: 'networkidle2' });
-        console.log('page', page);
+        await page.goto(uri, { waitUntil: 'domcontentloaded' });
 
         await page.waitForSelector('.ais-InfiniteHits-item', { timeout: 30000 });
 
