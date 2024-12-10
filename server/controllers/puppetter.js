@@ -13,7 +13,7 @@ export const getNetmedsResult = async (req, res) => {
         console.log('URI:', uri);
 
         const browser = await puppeteer.launch({
-            headless: false,
+            headless: true,
             executablePath: chromium.path,
             args: [
                 '--no-sandbox',
