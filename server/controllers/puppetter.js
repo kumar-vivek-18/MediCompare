@@ -13,7 +13,7 @@ export const getNetmedsResult = async (req, res) => {
         console.log('URI:', uri);
 
         const browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             executablePath: chromium.path,
             args: [
                 '--no-sandbox',
@@ -22,6 +22,15 @@ export const getNetmedsResult = async (req, res) => {
             ],
         });
         const page = await browser.newPage();
+        await page.emulate({
+            viewport: {
+                width: 375, // Width of iPhone X
+                height: 812, // Height of iPhone X
+                isMobile: true, // Indicates a mobile device
+                hasTouch: true, // Enables touch capabilities
+            },
+            userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148', // iPhone X user agent
+        });
 
         await page.goto(uri, { waitUntil: 'domcontentloaded' });
 
@@ -34,10 +43,10 @@ export const getNetmedsResult = async (req, res) => {
             console.log('items', items);
 
             items.forEach(item => {
-                const name = item.querySelector('.clsgetname')?.textContent?.trim() || 'No name';
-                const description = item.querySelector('.drug-varients')?.textContent?.trim() || 'No description';
+                const name = item.querySelector('.info')?.textContent?.trim() || 'No name';
+                const description = item.querySelector('.cate_filter')?.textContent?.trim() || 'No description';
                 const price = item.querySelector('.final-price')?.textContent?.trim() || 'No price';
-                const image = item.querySelector('.product-image-photo')?.src || 'No image';
+                const image = item.querySelector('.product-link img')?.src || 'No image';
 
                 data.push({ name, description, price, image });
                 // console.log('data', data);
@@ -109,22 +118,26 @@ export const get1mgRes = async (req, res) => {
     try {
         const { uri } = req.query;
         const browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             executablePath: chromium.path,
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
         });
         const page = await browser.newPage();
-
+        await page.setViewport({
+            width: 1520, // Adjust based on your server's resolution
+            height: 1080, // Adjust based on your server's resolution
+            deviceScaleFactor: 1 // Default scale factor
+        });
         // const url = 'https://pharmeasy.in/search/all?name=dolo';
         console.log('uri, page', uri, page);
         await page.goto(uri, { waitUntil: 'domcontentloaded' });
 
-        await page.waitForSelector('.style__container___jkjS2');
+        await page.waitForSelector('.style__product-box___3oEU6');
 
         const medicines = await page.evaluate(() => {
             const data = [];
-            const items = document.querySelectorAll('.style__container___jkjS2');
-
+            const items = document.querySelectorAll('.style__product-box___3oEU6');
+            console.log('items', items);
             items.forEach(item => {
                 const name = item.querySelector('.style__pro-title___3G3rr')?.textContent?.trim() || 'No name';
                 const description = item.querySelector('.style__pack-size___3jScl')?.textContent?.trim() || 'No description';
