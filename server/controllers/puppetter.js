@@ -33,7 +33,7 @@ export const getNetmedsResult = async (req, res) => {
 
         await page.goto(uri, { waitUntil: 'domcontentloaded' });
 
-        await page.waitForSelector('.ais-InfiniteHits-item', { timeout: 30000 });
+        // await page.waitForSelector('.ais-InfiniteHits-item', { timeout: 30000 });
 
         console.log('Scraping data...');
         // const medicines = await page.evaluate(() => {
