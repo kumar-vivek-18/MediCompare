@@ -13,12 +13,11 @@ export const getNetmedsResult = async (req, res) => {
         console.log('URI:', uri);
 
         const browser = await puppeteer.launch({
-            headless: true,
+            headless: false,
             executablePath: chromium.path,
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
-                '--window-size=600,800'
             ],
         });
         const page = await browser.newPage();
@@ -37,29 +36,33 @@ export const getNetmedsResult = async (req, res) => {
         await page.waitForSelector('.ais-InfiniteHits-item', { timeout: 30000 });
 
         console.log('Scraping data...');
-        const medicines = await page.evaluate(() => {
-            const data = [];
-            const items = document.querySelectorAll('.ais-InfiniteHits-item');
-            console.log('items', items);
+        // const medicines = await page.evaluate(() => {
+        //     const data = [];
+        //     const items = document.querySelectorAll('.ais-InfiniteHits-item');
+        //     console.log('items', items);
 
-            items.forEach(item => {
-                const name = item.querySelector('.info')?.textContent?.trim() || 'No name';
-                const description = item.querySelector('.cate_filter')?.textContent?.trim() || 'No description';
-                const price = item.querySelector('.final-price')?.textContent?.trim() || 'No price';
-                const image = item.querySelector('.product-link img')?.src || 'No image';
+        //     items.forEach(item => {
+        //         const name = item.querySelector('.info')?.textContent?.trim() || 'No name';
+        //         const description = item.querySelector('.cate_filter')?.textContent?.trim() || 'No description';
+        //         const price = item.querySelector('.final-price')?.textContent?.trim() || 'No price';
+        //         const image = item.querySelector('.product-link img')?.src || 'No image';
 
-                data.push({ name, description, price, image });
-                // console.log('data', data);
-            });
+        //         data.push({ name, description, price, image });
+        //         // console.log('data', data);
+        //     });
 
-            return data;
-        });
+        //     return data;
+        // });
 
-        console.log('Scraped data: netmeds', medicines.slice(0, Math.min(medicines.length, 1)));
+        const htmlContent = await page.content();
+
+        // console.log('Scraped data: netmeds', medicines.slice(0, Math.min(medicines.length, 1)));
 
         await browser.close();
 
-        return res.status(200).json(medicines.slice(0, Math.min(medicines.length, 1)));
+        // const requiredMed = medicines.slice(0, Math.min(medicines.length, 1));
+
+        return res.status(200).json({ htmlContent });
 
     } catch (error) {
         console.error('Error scraping data:', error.message);
