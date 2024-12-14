@@ -3,18 +3,25 @@ import React, { useEffect, useState } from "react";
 import Netmeds from "../../assets/netmeds.png";
 import Pharmeasy from "../../assets/pharmeasy.png";
 import TataMg from "../../assets/tata-1mg.png";
+import ApolloPharmacy from "../../assets/appolopharmacy.jpeg"
+import DawaiWala from "../../assets/dawaibala.png"
+
+
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const MedicineDetails = ({
   medicineData,
   pharmeasyPrice,
   netmedsPrice,
   tataMgPrice,
+  apolloPrice,
+  dawaiWalaPrice,
+  loading
 }) => {
   console.log(medicineData);
   const medicineName = medicineData?.name;
   const [openIndex, setOpenIndex] = useState(null);
-  const [loading, setLoading] = useState(false);
 
   // const fetchPharmeasyPrice = async () => {
   //   setLoading(true);
@@ -74,49 +81,94 @@ const MedicineDetails = ({
           </div>
         </div>
 
-        <div className="flex flex-row w-full   gap-[20px] justify-between items-center mb-[10px] bg-[#E8FFE7] px-[20px] md:px-[80px] py-[40px] rounded-[16px] shadow-lg">
-         {netmedsPrice &&  <div className="flex flex-col gap-4 justify-center items-center">
-            <img
-              src={Netmeds}
-              alt="Netmeds"
-              className="w-[80px] md:w-[100px] h-[30px] md:h-[40px] object-cover "
-            />
-            <div className="flex flex-row gap-2">
-              <p className="text-[14px] poppins-bold">Price:</p>
-              <p className="text-[14px] poppins-bold text-green-500">
-                Rs. {netmedsPrice}
-              </p>
-            </div>
-          </div>
-}
-         {pharmeasyPrice && <div className="flex flex-col gap-4 justify-center items-center">
-            <img
-              src={Pharmeasy}
-              alt="Pharmeasy"
-              className="w-[80px] md:w-[100px] h-[30px] md:h-[40px] object-cover "
-            />
-            <div className="flex flex-row gap-2">
-              <p className="text-[14px] poppins-bold">Price:</p>
-              <p className="text-[14px] poppins-bold text-green-500">
-                Rs. {pharmeasyPrice}
-              </p>
-            </div>
-          </div>
-}
-          { tataMgPrice && <div className="flex flex-col gap-4 justify-center items-center">
-            <img
-              src={TataMg}
-              alt="Tata1Mg"
-              className="w-[80px] md:w-[100px] h-[30px] md:h-[40px] object-cover "
-            />
-            <div className="flex flex-row gap-1">
-              <p className="text-[14px] poppins-bold">Price:</p>
-              <p className="text-[14px] poppins-bold text-green-500">
-                Rs. {tataMgPrice}
-              </p>
-            </div>
-          </div>
-}
+        <div className=" w-full grid max-md:grid-cols-2 max-lg:grid-cols-3 grid-cols-5  gap-[20px] justify-center flex-wrap items-center mb-[10px] bg-[#E8FFE7] px-[20px] md:px-[80px] py-[40px] rounded-[16px] shadow-lg">
+          {
+            loading ? (
+
+              <div className="flex flex-col w-full items-center justify-center  gap-4">
+                {/* Loader Animation */}
+                <div className="w-10 h-10 border-4 border-gray-300 border-t-[#28A745] rounded-full animate-spin"></div>
+                <p className="text-lg font-medium text-gray-700">
+                  Loading other platform prices...
+                </p>
+              </div>
+            ) :
+              (
+                <>
+                  {netmedsPrice && <Link href="" className="flex flex-col gap-4 justify-center items-center bg-[#fff] px-[20px] py-[20px] rounded-[16px] shadow-lg hover:scale-110 duration-200 transition-all">
+                    <img
+                      src={Netmeds}
+                      alt="Netmeds"
+                      className="w-max  h-[30px]  object-cover "
+                    />
+                    <div className="flex flex-row gap-2">
+                      <p className="text-[14px] poppins-bold">Price:</p>
+                      <p className="text-[14px] poppins-bold text-green-500">
+                        Rs. {netmedsPrice}
+                      </p>
+                    </div>
+                  </Link>
+                  }
+                  {pharmeasyPrice && <Link href="" className="flex flex-col gap-4 justify-center items-center bg-[#fff] px-[20px] py-[20px] rounded-[16px] shadow-lg hover:scale-110 duration-200 transition-all">
+                    <img
+                      src={Pharmeasy}
+                      alt="Pharmeasy"
+                      className="w-max  h-[30px]  object-cover "
+                    />
+                    <div className="flex flex-row gap-2">
+                      <p className="text-[14px] poppins-bold">Price:</p>
+                      <p className="text-[14px] poppins-bold text-green-500">
+                        Rs. {pharmeasyPrice}
+                      </p>
+                    </div>
+                  </Link>
+                  }
+                  {tataMgPrice && <Link href="" className="flex flex-col gap-4 justify-center items-center bg-[#fff] px-[20px] py-[20px] rounded-[16px] shadow-lg hover:scale-110 duration-200 transition-all">
+                    <img
+                      src={TataMg}
+                      alt="Tata1Mg"
+                      className="w-max  h-[30px]  object-cover "
+                    />
+                    <div className="flex flex-row gap-1">
+                      <p className="text-[14px] poppins-bold">Price:</p>
+                      <p className="text-[14px] poppins-bold text-green-500">
+                        Rs. {tataMgPrice}
+                      </p>
+                    </div>
+                  </Link>
+                  }
+                  {apolloPrice && <Link href="" className="flex flex-col gap-4 justify-center items-center bg-[#fff] px-[20px] py-[20px] rounded-[16px] shadow-lg hover:scale-110 duration-200 transition-all">
+                    <img
+                      src={ApolloPharmacy}
+                      alt="Apollo"
+                      className="w-max  h-[30px]  object-cover "
+                    />
+                    <div className="flex flex-row gap-1">
+                      <p className="text-[14px] poppins-bold">Price:</p>
+                      <p className="text-[14px] poppins-bold text-green-500">
+                        Rs. {apolloPrice}
+                      </p>
+                    </div>
+                  </Link>
+                  }
+                  {dawaiWalaPrice && <Link href="" className="flex flex-col gap-4 justify-center items-center bg-[#fff] px-[10px] py-[20px] rounded-[16px] shadow-lg hover:scale-110 duration-200 transition-all">
+                    <img
+                      src={DawaiWala}
+                      alt="DawaiWala"
+                      className="w-max  h-[30px]  object-cover "
+                    />
+                    <div className="flex flex-row gap-1">
+                      <p className="text-[14px] poppins-bold">Price:</p>
+                      <p className="text-[14px] poppins-bold text-green-500">
+                        Rs. {dawaiWalaPrice}
+                      </p>
+                    </div>
+                  </Link>
+                  }
+                </>
+              )
+          }
+
         </div>
         <div className="flex flex-col gap-[20px] mb-[10px] bg-[#E8FFE7] px-[20px] md:px-[80px] py-[40px] rounded-[16px] shadow-lg">
           {/* Manufacturer Section */}

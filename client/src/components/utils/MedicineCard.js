@@ -38,7 +38,7 @@ const MedicineCard = ({ medicine }) => {
         {/* CTA Section */}
         <div className="mt-4 flex justify-center">
           <button className="w-full py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 poppins-regular transition">
-            Add to Cart
+            View Details
           </button>
         </div>
       </div>
